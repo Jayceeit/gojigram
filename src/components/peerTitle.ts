@@ -54,6 +54,8 @@ export default class PeerTitle {
   constructor(options?: PeerTitleOptions) {
     this.element = document.createElement('span');
     this.element.classList.add('peer-title');
+    // THIS IS NOT WORKING
+    this.element.onclick = (event) => this.copyElement(this.element.innerHTML)
     setDirection(this.element);
 
     this.options = {};
@@ -87,6 +89,10 @@ export default class PeerTitle {
       this.hasInner = hasInner;
       this.element.classList.toggle('with-icons', hasInner);
     }
+  }
+
+  public copyElement(innerHTML: string) {
+    navigator.clipboard.writeText(innerHTML);
   }
 
   public async update(options?: PeerTitleOptions) {
@@ -137,7 +143,7 @@ export default class PeerTitle {
             if(this.options.threadId === threadId) {
               this.options.threadId = undefined;
               this.update({threadId: undefined});
-            }
+            }wrapOptions
           });
 
           setInnerHTML(this.element, i18n('Loading'));

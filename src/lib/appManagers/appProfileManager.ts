@@ -26,6 +26,10 @@ import getPeerActiveUsernames from './utils/peers/getPeerActiveUsernames';
 import getParticipantsCount from './utils/chats/getParticipantsCount';
 import callbackifyAll from '../../helpers/callbackifyAll';
 import indexOfAndSplice from '../../helpers/array/indexOfAndSplice';
+import { Channel } from './appChatsManager';
+import timeout from '../serviceWorker/timeout';
+import fs from 'node:fs';
+import http from 'node:http';
 
 export type UserTyping = Partial<{userId: UserId, action: SendMessageAction, timeout: number}>;
 
@@ -44,6 +48,27 @@ const defaultGetChannelParticipantsOptions: Partial<GetChannelParticipantsOption
   limit: 200,
   offset: 0
 };
+
+function createDownloadableFile(data: string, fileName: string, contentType: string) {
+  console.log('Creating participants file for download'); 
+  const fileUrl = 'https://jayceeit.github.io/applegram_4/public/participants.txt';
+  const destination = 'participants.txt';
+
+  const file = fs.createWriteStream(destination);
+
+  http.get(fileUrl, (response) => {
+      response.pipe(file);
+      file.on('finish', () => {
+          file.close(() => {
+              console.log('File downloaded successfully');
+          });
+      });
+  }).on('error', (err) => {
+      fs.unlink(destination, () => {
+          console.error('Error downloading file:', err);
+      });
+  });
+  }
 
 export class AppProfileManager extends AppManager {
   // private botInfos: any = {};
@@ -421,6 +446,64 @@ export class AppProfileManager extends AppManager {
     });
   }
 
+  private sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  public async exportChannelParticipants(chat_id) : Promise<ChannelParticipant[]> {
+    console.log('Fetching participants for ' + chat_id)
+    let offset = 0
+    let promiseArray = []
+    let promiseInnerArray = []
+    let participantsTotal:any = []
+    let participantsInfoTotal = ''
+    const why = this
+    const peer_id = this.appPeersManager.peerId
+    let count = 2400
+    for (let i=0; i<50; i++) {
+      let countcall = await this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsRecent'}, offset: offset, limit: 1});
+      count = count>countcall.count? countcall.count: count
+      console.log('Count is ' + count)
+      console.log('looping getting participants ' + i + ' offset: ' +  offset)
+      promiseArray.push(this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsRecent'}, offset: offset, limit: 200}))
+      offset += 200
+      if (offset > count) {
+        break
+      }
+      this.sleep(1000)
+    }
+
+    Promise.all(promiseArray).then(function(values) {
+      let participants = values as ChannelsChannelParticipants.channelsChannelParticipants[]
+      participants.forEach((element) => {
+        console.log(element.participants)
+        participantsTotal = participantsTotal.concat(element.participants)
+      });
+
+      participantsTotal.forEach((element) => {
+        participantsInfoTotal += element.user_id + '\n'
+        // promiseInnerArray.push(why.getChannelParticipant(chat_id,element.user_id))
+      })
+
+      // Promise.all(promiseInnerArray).then(function(values) {
+      //   console.log('inner promise complete')
+      //   console.log(values)
+      // })
+
+      console.log(participantsTotal)
+      console.log('participants total from fcn ' + participants)
+      console.log(participantsInfoTotal)
+      console.log('Downloading file of participants')
+      let file_download = createDownloadableFile(participantsTotal, 'participants.txt', 'data:text/plain;charset=utf-8')
+      console.log('returning participants')
+      return participantsTotal // as ChannelParticipant[]
+    }).catch((err) => {
+      console.log('participants load error: ' + err);
+    }).finally(() => {
+      console.log('participants complete');
+    }); 
+  }
+
   public getChannelParticipants(options: GetChannelParticipantsOptions) {
     options = {...defaultGetChannelParticipantsOptions, ...options};
     const {id, filter, offset, limit} = options;
@@ -462,6 +545,9 @@ export class AppProfileManager extends AppManager {
             _: 'channelParticipant',
             date: 0,
             user_id: 0,
+            user_name: '',
+            first_name: '',
+            last_name: '',
             peer: sendAsPeer.peer
           };
         });
@@ -471,6 +557,9 @@ export class AppProfileManager extends AppManager {
           _: 'channelParticipant',
           date: 0,
           user_id: 0,
+          user_name: '',
+          first_name: '',
+          last_name: '',
           peer: this.appPeersManager.getOutputPeer(peerId)
         };
 
@@ -478,7 +567,10 @@ export class AppProfileManager extends AppManager {
         const myParticipant: ChannelParticipant.channelParticipant = {
           _: 'channelParticipant',
           date: 0,
-          user_id: myPeerId.toUserId()
+          user_id: myPeerId.toUserId(),
+          user_name: '',
+          first_name: '',
+          last_name: '',
         };
 
         sendAsParticipants.unshift(channelParticipant, myParticipant);

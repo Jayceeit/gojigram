@@ -5306,12 +5306,15 @@ export namespace ChannelMessagesFilter {
 /**
  * @link https://core.telegram.org/type/ChannelParticipant
  */
-export type ChannelParticipant = ChannelParticipant.channelParticipant | ChannelParticipant.channelParticipantSelf | ChannelParticipant.channelParticipantCreator | ChannelParticipant.channelParticipantAdmin | ChannelParticipant.channelParticipantBanned | ChannelParticipant.channelParticipantLeft;
+export type ChannelParticipant = .channelParticipant | ChannelParticipant.channelParticipantSelf | ChannelParticipant.channelParticipantCreator | ChannelParticipant.channelParticipantAdmin | ChannelParticipant.channelParticipantBanned | ChannelParticipant.channelParticipantLeft;
 
 export namespace ChannelParticipant {
   export type channelParticipant = {
     _: 'channelParticipant',
     user_id: string | number,
+    user_name: string,
+    first_name: string,
+    last_name: string,
     date: number,
     peer?: Peer
   };

@@ -418,6 +418,19 @@ export default class ChatTopbar {
         return this.chat.type === ChatType.Chat && !!(chatFull as ChatFull.channelFull)?.linked_chat_id;
       }
     }, {
+      icon: 'comments',
+      text: 'ExportMembers',
+      onClick: async() => {
+        const chat_id = this.peerId.toChatId();
+        console.log('Export participants clicked')
+        let participants = await this.managers.appProfileManager.exportChannelParticipants(chat_id)
+        console.log('participants ' + participants)
+        },
+      verify: async() => {
+        const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
+        return this.chat.type === ChatType.Chat && !!(chatFull as ChatFull.channelFull)?.linked_chat_id;
+      }
+    },{
       icon: 'phone',
       text: 'Call',
       onClick: this.onCallClick.bind(this, 'voice'),

@@ -1412,6 +1412,10 @@ export default class AppSearchSuper {
     } else return Promise.resolve();
   }
 
+  private async exportMembers() {
+    console.log('Made it to export participants')
+  }
+
   private async loadMembers({mediaTab}: SearchSuperLoadTypeOptions) {
     const chatId = mediaTab.type === 'members' ? this.searchContext.peerId.toChatId() : undefined;
     const userId = mediaTab.type === 'groups' ? this.searchContext.peerId.toUserId() : undefined;

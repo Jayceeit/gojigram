@@ -41,6 +41,8 @@ export default async function getPeerTitle<
     if(user) {
       if(user.first_name) title += user.first_name;
       if(user.last_name && (!onlyFirstName || !title)) title += ' ' + user.last_name;
+      if(user.username) title += ' @' + user.username;
+      title += ' ' + user.id;
     }
 
     if(!title) title = !user || user.pFlags.deleted ? I18n.format(onlyFirstName ? 'Deleted' : 'HiddenName', true) : getPeerActiveUsernames(user)[0] || '';
