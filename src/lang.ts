@@ -1243,6 +1243,7 @@ const lang = {
   'ClearButton': 'Clear',
   'FilterAllChats': 'All Chats',
   'FilterAllChatsShort': 'All',
+  'ExportMembers': 'Export Members',
   'Call': 'Call',
   'VideoCall': 'Video Call',
   'CallMessageOutgoing': 'Outgoing Call',
