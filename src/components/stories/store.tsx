@@ -80,7 +80,7 @@ export type StoriesContextActions = {
   toggleMute: () => void,
   toggleInterface: (hide: boolean) => void,
   toggleSorting: (type: StoriesSortingFreezeType, freeze: boolean) => void,
-  load: () => Promise<boolean>,
+  load: () => Promise<boolean> | boolean,
   setBuffering: (buffering: boolean) => void,
   setLoop: (loop: boolean) => void
 };
@@ -244,29 +244,39 @@ const createStoriesStore = (props: {
         const offsetId = peer ? peer.stories[peer.stories.length - 1].id : 0;
         const loadCount = 30;
         let promise: ReturnType<AppStoriesManager['getPinnedStories']>;
+        let result : any;
         if(pinned) {
-          promise = rootScope.managers.appStoriesManager.getPinnedStories(peerId, loadCount, offsetId);
+          result = rootScope.managers.appStoriesManager.getPinnedStories(peerId, loadCount, offsetId);
+          if (result.type()==Promise) {
+            promise = result
+          };
         } else {
-          promise = rootScope.managers.appStoriesManager.getStoriesArchive(peerId, loadCount, offsetId);
+          result = rootScope.managers.appStoriesManager.getStoriesArchive(peerId, loadCount, offsetId);
+          if (result.type()==Promise) {
+            promise = result
+          };
         }
-        return promise.then(({count, stories: storyItems}) => {
-          if(!offsetId) {
-            const peer: StoriesContextPeerState = {
-              index: 0,
-              peerId,
-              stories: storyItems,
-              count
-            };
 
-            addPeers([peer]);
-            setState({ready: true});
-          } else {
-            setState('peers', 0, 'stories', (stories) => [...stories, ...storyItems]);
-            setState('peers', 0, 'count', count);
-          }
+        if (result.type() != Promise) {
+          const count : any = result.count? result.count : 0;
+        {
+            if(!offsetId) {
+              const peer: StoriesContextPeerState = {
+                index: 0,
+                peerId,
+                stories: result.stories,
+                count
+              };
 
-          return loaded = storyItems.length < loadCount;
-        });
+              addPeers([peer]);
+              setState({ready: true});
+            } else {
+              setState('peers', 0, 'stories', (result.stories));
+              setState('peers', 0, 'count', count);
+            }
+
+          return loaded = result.stories.length < loadCount;
+        }
       }
 
       return rootScope.managers.appStoriesManager.getPeerStories(peerId).then((peerStories) => {
@@ -292,6 +302,7 @@ const createStoriesStore = (props: {
       return loaded;
     });
   };
+  }
 
   const actions: StoriesContextActions = {
     set: (params) => {
@@ -409,9 +420,7 @@ const createStoriesStore = (props: {
         }
       }
     },
-
     load,
-
     setBuffering: (buffering) => {
       setState({buffering});
     },
@@ -775,13 +784,13 @@ const createStoriesStore = (props: {
   }
   // * updates section end
 
-  if(props.onLoadCallback) {
-    props.onLoadCallback(actions.load);
-  } else if(!state.ready) {
-    actions.load();
-  } else if(state.peer.index === undefined) {
-    actions.resetIndexes();
-  }
+  // if(props.onLoadCallback) {
+  //   props.onLoadCallback(actions.load);
+  // } else if(!state.ready) {
+  //   actions.load();
+  // } else if(state.peer.index === undefined) {
+  //   actions.resetIndexes();
+  // }
 
   return [state, actions];
 };

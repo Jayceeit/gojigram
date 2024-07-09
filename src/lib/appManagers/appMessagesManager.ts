@@ -4645,7 +4645,7 @@ export class AppMessagesManager extends AppManager {
       });
 
       return Promise.all([result, legacyResult]).then(([searchCounters, legacySearchCounters]) => {
-        const out: MessagesSearchCounter[] = searchCounters.map((searchCounter, idx) => {
+        const out: MessagesSearchCounter[] = searchCounters.map((searchCounter : any, idx : any) => {
           return {
             ...searchCounter,
             count: searchCounter.count + legacySearchCounters[idx].count

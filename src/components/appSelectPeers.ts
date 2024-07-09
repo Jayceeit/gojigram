@@ -50,6 +50,7 @@ import {hideToast, toastNew} from './toast';
 import wrapPeerTitle from './wrappers/peerTitle';
 import anchorCallback from '../helpers/dom/anchorCallback';
 import PopupPremium from './popups/premium';
+import { AnyClass } from '../types';
 
 export type SelectSearchPeerType = 'contacts' | 'dialogs' | 'channelParticipants' | 'custom';
 export type FilterPeerTypeByFunc = (peer: ReturnType<AppPeersManager['getPeer']>) => boolean;
@@ -945,7 +946,7 @@ export default class AppSelectPeers {
     }
 
     const middleware = this.middlewareHelperLoader.get();
-    const promise = this.promise = loadPromise.catch((err) => {
+    const promise = this.promise = loadPromise.catch((err : any) => {
       console.error('get more result error', err);
     }).then(() => {
       if(this.promise === promise) {

@@ -143,7 +143,7 @@ export default class PeerTitle {
             if(this.options.threadId === threadId) {
               this.options.threadId = undefined;
               this.update({threadId: undefined});
-            }wrapOptions
+            } this.options.wrapOptions
           });
 
           setInnerHTML(this.element, i18n('Loading'));
