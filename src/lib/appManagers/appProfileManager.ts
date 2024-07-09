@@ -446,11 +446,11 @@ export class AppProfileManager extends AppManager {
     });
   }
 
-  private sleep(ms) {
+  private sleep(ms: any) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  public async exportChannelParticipants(chat_id) : Promise<ChannelParticipant[]> {
+  public async exportChannelParticipants(chat_id: any) : Promise<any> {
     console.log('Fetching participants for ' + chat_id)
     let offset = 0
     const promiseArray = []
@@ -480,8 +480,8 @@ export class AppProfileManager extends AppManager {
         participantsTotal = participantsTotal.concat(element.users)
       });
 
-      participantsTotal.forEach((element) => {
-        let elementstring = element.id 
+      participantsTotal.forEach((element: any) => {
+        let elementstring = element.id
         elementstring = (element.username)? elementstring + ' @' + element.username : elementstring;
         elementstring = (element.first_name)? elementstring + ' ' + element.first_name : elementstring;
         elementstring = (element.last_name)? elementstring + ' ' + element.last_name : elementstring;
