@@ -476,12 +476,17 @@ export class AppProfileManager extends AppManager {
     Promise.all(promiseArray).then(function(values) {
       let participants = values as ChannelsChannelParticipants.channelsChannelParticipants[]
       participants.forEach((element) => {
-        console.log(element.participants)
-        participantsTotal = participantsTotal.concat(element.participants)
+        console.log(element.users)
+        participantsTotal = participantsTotal.concat(element.users)
       });
 
       participantsTotal.forEach((element) => {
-        participantsInfoTotal += element.user_id + '\n'
+        let elementstring = element.id 
+        elementstring = (element.username)? elementstring + ' @' + element.username : elementstring;
+        elementstring = (element.first_name)? elementstring + ' ' + element.first_name : elementstring;
+        elementstring = (element.last_name)? elementstring + ' ' + element.last_name : elementstring;
+        elementstring += '\n';
+        participantsInfoTotal +=  elementstring
         // promiseInnerArray.push(why.getChannelParticipant(chat_id,element.user_id))
       })
 
