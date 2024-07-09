@@ -5306,7 +5306,7 @@ export namespace ChannelMessagesFilter {
 /**
  * @link https://core.telegram.org/type/ChannelParticipant
  */
-export type ChannelParticipant = .channelParticipant | ChannelParticipant.channelParticipantSelf | ChannelParticipant.channelParticipantCreator | ChannelParticipant.channelParticipantAdmin | ChannelParticipant.channelParticipantBanned | ChannelParticipant.channelParticipantLeft;
+export type ChannelParticipant = channelParticipant | ChannelParticipant.channelParticipantSelf | ChannelParticipant.channelParticipantCreator | ChannelParticipant.channelParticipantAdmin | ChannelParticipant.channelParticipantBanned | ChannelParticipant.channelParticipantLeft;
 
 export namespace ChannelParticipant {
   export type channelParticipant = {
@@ -19197,4 +19197,3 @@ export interface MethodDeclMap {
   'payments.sendStarsForm': {req: PaymentsSendStarsForm, res: PaymentsPaymentResult},
   'payments.refundStarsCharge': {req: PaymentsRefundStarsCharge, res: Updates},
 }
-
