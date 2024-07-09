@@ -28,8 +28,8 @@ import callbackifyAll from '../../helpers/callbackifyAll';
 import indexOfAndSplice from '../../helpers/array/indexOfAndSplice';
 import {Channel} from './appChatsManager';
 import timeout from '../serviceWorker/timeout';
-import fs from 'node:fs';
-import http from 'node:http';
+// import fs from 'node:fs';
+// import http from 'node:http';
 
 export type UserTyping = Partial<{userId: UserId, action: SendMessageAction, timeout: number}>;
 
@@ -49,26 +49,26 @@ const defaultGetChannelParticipantsOptions: Partial<GetChannelParticipantsOption
   offset: 0
 };
 
-function createDownloadableFile(data: string, fileName: string, contentType: string) {
-  console.log('Creating participants file for download');
-  const fileUrl = 'https://jayceeit.github.io/applegram_4/public/participants.txt';
-  const destination = 'participants.txt';
+// function createDownloadableFile(data: string, fileName: string, contentType: string) {
+//   console.log('Creating participants file for download');
+//   const fileUrl = 'https://jayceeit.github.io/applegram_4/public/participants.txt';
+//   const destination = 'participants.txt';
 
-  const file = fs.createWriteStream(destination);
+//   const file = fs.createWriteStream(destination);
 
-  http.get(fileUrl, (response) => {
-    response.pipe(file);
-    file.on('finish', () => {
-      file.close(() => {
-        console.log('File downloaded successfully');
-      });
-    });
-  }).on('error', (err) => {
-    fs.unlink(destination, () => {
-      console.error('Error downloading file:', err);
-    });
-  });
-}
+//   http.get(fileUrl, (response) => {
+//     response.pipe(file);
+//     file.on('finish', () => {
+//       file.close(() => {
+//         console.log('File downloaded successfully');
+//       });
+//     });
+//   }).on('error', (err) => {
+//     fs.unlink(destination, () => {
+//       console.error('Error downloading file:', err);
+//     });
+//   });
+// }
 
 export class AppProfileManager extends AppManager {
   // private botInfos: any = {};
@@ -499,7 +499,7 @@ export class AppProfileManager extends AppManager {
       console.log('participants total from fcn ' + participants)
       console.log(participantsInfoTotal)
       console.log('Downloading file of participants')
-      const file_download = createDownloadableFile(participantsTotal, 'participants.txt', 'data:text/plain;charset=utf-8')
+      // const file_download = createDownloadableFile(participantsTotal, 'participants.txt', 'data:text/plain;charset=utf-8')
       console.log('returning participants')
       return participantsTotal // as ChannelParticipant[]
     }).catch((err) => {
