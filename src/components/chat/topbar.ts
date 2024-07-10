@@ -418,7 +418,7 @@ export default class ChatTopbar {
         return this.chat.type === ChatType.Chat && !!(chatFull as ChatFull.channelFull)?.linked_chat_id;
       }
     }, {
-      icon: 'comments',
+      icon: 'adduser',
       text: 'ExportMembers',
       onClick: async() => {
         const chat_id = this.peerId.toChatId();
@@ -427,8 +427,8 @@ export default class ChatTopbar {
         console.log('participants ' + participants)
       },
       verify: async() => {
-        const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
-        return this.chat.type === ChatType.Chat && !!(chatFull as ChatFull.channelFull)?.linked_chat_id;
+        // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
+        return this.chat.type === ChatType.Chat;
       }
     }, {
       icon: 'phone',

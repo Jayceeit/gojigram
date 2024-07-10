@@ -454,22 +454,19 @@ export class AppProfileManager extends AppManager {
     console.log('Fetching participants for ' + chat_id)
     let offset = 0
     const promiseArray = []
-    const promiseInnerArray = []
     let participantsTotal:any = []
-    let participantsInfoTotal = ''
-    const why = this
-    const peer_id = this.appPeersManager.peerId
-    let count = 2400
+    let participantsInfoTotal = 'Participants from Export\n'
+    let count = 2600
     for(let i=0; i<50; i++) {
+      if(offset > count) {
+        break
+      }
       const countcall = await this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsRecent'}, offset: offset, limit: 1});
       count = count>countcall.count? countcall.count: count
       console.log('Count is ' + count)
       console.log('looping getting participants ' + i + ' offset: ' +  offset)
       promiseArray.push(this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsRecent'}, offset: offset, limit: 200}))
       offset += 200
-      if(offset > count) {
-        break
-      }
       this.sleep(1000)
     }
 
@@ -487,20 +484,10 @@ export class AppProfileManager extends AppManager {
         elementstring = (element.last_name)? elementstring + ' ' + element.last_name : elementstring;
         elementstring += '\n';
         participantsInfoTotal +=  elementstring
-        // promiseInnerArray.push(why.getChannelParticipant(chat_id,element.user_id))
       })
 
-      // Promise.all(promiseInnerArray).then(function(values) {
-      //   console.log('inner promise complete')
-      //   console.log(values)
-      // })
-
-      console.log(participantsTotal)
-      console.log('participants total from fcn ' + participants)
       console.log(participantsInfoTotal)
-      console.log('Downloading file of participants')
       // const file_download = createDownloadableFile(participantsTotal, 'participants.txt', 'data:text/plain;charset=utf-8')
-      console.log('returning participants')
       return participantsTotal // as ChannelParticipant[]
     }).catch((err) => {
       console.log('participants load error: ' + err);
