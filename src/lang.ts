@@ -1244,6 +1244,7 @@ const lang = {
   'FilterAllChats': 'All Chats',
   'FilterAllChatsShort': 'All',
   'ExportMembers': 'Export Members',
+  'ExportMoreMembers' : 'Export More Members',
   'Call': 'Call',
   'VideoCall': 'Video Call',
   'CallMessageOutgoing': 'Outgoing Call',

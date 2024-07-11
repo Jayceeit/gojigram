@@ -1052,6 +1052,7 @@
 "Create" = "Create";
 "ViewDiscussion" = "View discussion";
 "ExportMembers" = "Export Members";
+"ExportMoreMembers" = "Export More Members";
 "MessageScheduledUntilOnline" = "Scheduled until online";
 "ReportChat" = "Report";
 "ReportChatSpam" = "Spam";

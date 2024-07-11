@@ -450,26 +450,33 @@ export class AppProfileManager extends AppManager {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  public async exportChannelParticipants(chat_id: any) : Promise<any> {
+  public async exportChannelParticipants(chat_id: any, starting_offset: number) : Promise<any> {
     console.log('Fetching participants for ' + chat_id)
-    let offset = 0
-    const promiseArray:any = []
+    let offset = starting_offset
+    const promiseArray = []
     let participantsTotal:any = []
-    let participantsInfoTotal:string = 'Participants from Export\n'
-    let count = 2600
+    let participantsInfoTotal = 'Participants from Export\n'
+    let count = 2000
+
+    if (starting_offset == 2600) {
+      count = 5200
+    }
+
     for(let i=0; i<50; i++) {
-      if(offset > count) {
-        break
-      }
       const countcall = await this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsRecent'}, offset: offset, limit: 1});
       count = count>countcall.count? countcall.count: count
       console.log('Count is ' + count)
       console.log('looping getting participants ' + i + ' offset: ' +  offset)
       promiseArray.push(this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsRecent'}, offset: offset, limit: 200}))
       offset += 200
+      if (offset > count) {
+        break
+      }
+      this.sleep(10000)
     }
 
     const participants = Promise.all(promiseArray).then(function(values) {
+      console.log('concatting participants')
       const participants = values as ChannelsChannelParticipants.channelsChannelParticipants[]
       participants.forEach((element) => {
         console.log(element.users)

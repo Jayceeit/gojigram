@@ -424,6 +424,18 @@ export default class ChatTopbar {
         const chat_id = this.peerId.toChatId();
         console.log('Export participants clicked')
         const participants = await this.managers.appProfileManager.exportChannelParticipants(chat_id)
+      },
+      verify: async() => {
+        // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
+        return this.chat.type === ChatType.Chat;
+      }
+    }, {
+      icon: 'adduser',
+      text: 'ExportMoreMembers',
+      onClick: async() => {
+        const chat_id = this.peerId.toChatId();
+        console.log('Export participants clicked')
+        const participants = await this.managers.appProfileManager.exportChannelParticipants(chat_id, 2600)
         alert(participants)
       },
       verify: async() => {
