@@ -453,9 +453,9 @@ export class AppProfileManager extends AppManager {
   public async exportChannelParticipants(chat_id: any) : Promise<any> {
     console.log('Fetching participants for ' + chat_id)
     let offset = 0
-    const promiseArray = []
+    const promiseArray:any = []
     let participantsTotal:any = []
-    let participantsInfoTotal = 'Participants from Export\n'
+    let participantsInfoTotal:string = 'Participants from Export\n'
     let count = 2600
     for(let i=0; i<50; i++) {
       if(offset > count) {
@@ -467,10 +467,9 @@ export class AppProfileManager extends AppManager {
       console.log('looping getting participants ' + i + ' offset: ' +  offset)
       promiseArray.push(this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsRecent'}, offset: offset, limit: 200}))
       offset += 200
-      this.sleep(1000)
     }
 
-    Promise.all(promiseArray).then(function(values) {
+    const participants = Promise.all(promiseArray).then(function(values) {
       const participants = values as ChannelsChannelParticipants.channelsChannelParticipants[]
       participants.forEach((element) => {
         console.log(element.users)
@@ -486,14 +485,15 @@ export class AppProfileManager extends AppManager {
         participantsInfoTotal +=  elementstring
       })
 
-      console.log(participantsInfoTotal)
+      console.log('Participants Info Total: ', participantsInfoTotal)
       // const file_download = createDownloadableFile(participantsTotal, 'participants.txt', 'data:text/plain;charset=utf-8')
-      return participantsTotal // as ChannelParticipant[]
+      return participantsInfoTotal // as ChannelParticipant[]
     }).catch((err) => {
       console.log('participants load error: ' + err);
     }).finally(() => {
       console.log('participants complete');
     });
+    return participants
   }
 
   public getChannelParticipants(options: GetChannelParticipantsOptions) {

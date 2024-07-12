@@ -424,7 +424,7 @@ export default class ChatTopbar {
         const chat_id = this.peerId.toChatId();
         console.log('Export participants clicked')
         const participants = await this.managers.appProfileManager.exportChannelParticipants(chat_id)
-        console.log('participants ' + participants)
+        alert(participants)
       },
       verify: async() => {
         // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
