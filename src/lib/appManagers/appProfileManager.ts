@@ -455,7 +455,7 @@ export class AppProfileManager extends AppManager {
     let offset = 0
     const promiseArray:any = []
     let participantsTotal:any = []
-    let participantsInfoTotal:string = 'Participants from Export\n'
+    let participantsInfoTotal:string = ''
     let count = 2600
     for(let i=0; i<50; i++) {
       if(offset > count) {
