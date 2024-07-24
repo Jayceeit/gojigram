@@ -428,7 +428,6 @@ export default class ChatTopbar {
         alert(admins)
       },
       verify: async() => {
-        // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
         return this.chat.type === ChatType.Chat;
       }
     },{
@@ -441,7 +440,6 @@ export default class ChatTopbar {
         alert(participants)
       },
       verify: async() => {
-        // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
         return this.chat.type === ChatType.Chat;
       }
     }, {
@@ -454,7 +452,6 @@ export default class ChatTopbar {
         alert(participants)
       },
       verify: async() => {
-        // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
         return this.chat.type === ChatType.Chat;
       }
     }, {

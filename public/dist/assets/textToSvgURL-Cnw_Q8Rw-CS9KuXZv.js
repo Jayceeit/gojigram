@@ -1,0 +1,1 @@
+function l(t,n){const r=t.length;if(r!==n.length)return!1;for(let e=0;e<r;++e)if(t[e]!==n[e])return!1;return!0}function a(t){const n=new Blob([t],{type:"image/svg+xml;charset=utf-8"});return new Promise(r=>{const e=new FileReader;e.onload=o=>{r(o.target.result)},e.readAsDataURL(n)})}export{a as l,l as o};
