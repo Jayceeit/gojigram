@@ -417,13 +417,28 @@ export default class ChatTopbar {
         const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
         return this.chat.type === ChatType.Chat && !!(chatFull as ChatFull.channelFull)?.linked_chat_id;
       }
-    }, {
+    }, 
+    {
+      icon: 'adduser',
+      text: 'ExportAdmins',
+      onClick: async() => {
+        const chat_id = this.peerId.toChatId();
+        console.log('Export admins clicked')
+        const admins = await this.managers.appProfileManager.exportChannelAdmins(chat_id)
+        alert(admins)
+      },
+      verify: async() => {
+        // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
+        return this.chat.type === ChatType.Chat;
+      }
+    },{
       icon: 'adduser',
       text: 'ExportMembers',
       onClick: async() => {
         const chat_id = this.peerId.toChatId();
         console.log('Export participants clicked')
-        const participants = await this.managers.appProfileManager.exportChannelParticipants(chat_id)
+        const participants = await this.managers.appProfileManager.exportChannelParticipants(chat_id, 0)
+        alert(participants)
       },
       verify: async() => {
         // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());

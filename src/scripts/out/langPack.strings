@@ -1051,6 +1051,7 @@
 "LinkNotFound" = "Unfortunately, you can't access this message. You are not a member of the chat where it was posted.";
 "Create" = "Create";
 "ViewDiscussion" = "View discussion";
+"ExportAdmins" = "Export Admins";
 "ExportMembers" = "Export Members";
 "ExportMoreMembers" = "Export More Members";
 "MessageScheduledUntilOnline" = "Scheduled until online";

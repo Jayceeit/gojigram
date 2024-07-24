@@ -450,12 +450,61 @@ export class AppProfileManager extends AppManager {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  public async exportChannelAdmins(chat_id: any) : Promise<any> {
+    console.log('Fetching admins for ' + chat_id)
+    let adminsTotal:any = []
+    let adminsInfoTotal = ''
+    const promiseArray = []
+    let offset = 0
+    let count = 2600
+
+    for(let i=0; i<50; i++) {
+      const countcall = await this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsAdmins'}, offset: offset, limit: 1});
+      count = count>countcall.count? countcall.count: count
+      console.log('Count is ' + count)
+      console.log('looping getting admins ' + i + ' offset: ' +  offset)
+      promiseArray.push(this.getChannelParticipants({id :  chat_id, filter: {_: 'channelParticipantsAdmins'}, offset: offset, limit: 200}))
+      offset += 200
+      if (offset > count) {
+        break
+      }
+      this.sleep(10000)
+    }
+
+    const participants = Promise.all(promiseArray).then(function(values) {
+      console.log('concatting admins')
+      const participants = values as ChannelsChannelParticipants.channelsChannelParticipants[]
+      participants.forEach((element) => {
+        console.log(element.users)
+        adminsTotal = adminsTotal.concat(element.users)
+      });
+
+      adminsTotal.forEach((element: any) => {
+        let elementstring = element.id
+        elementstring = (element.username)? elementstring + ' @' + element.username : elementstring;
+        elementstring = (element.first_name)? elementstring + ' ' + element.first_name : elementstring;
+        elementstring = (element.last_name)? elementstring + ' ' + element.last_name : elementstring;
+        elementstring += '\n';
+        adminsInfoTotal +=  elementstring
+      })
+
+      console.log('Admins Info Total: ', adminsInfoTotal)
+      // const file_download = createDownloadableFile(participantsTotal, 'participants.txt', 'data:text/plain;charset=utf-8')
+      return adminsInfoTotal // as ChannelParticipant[]
+    }).catch((err) => {
+      console.log('participants load error: ' + err);
+    }).finally(() => {
+      console.log('participants complete');
+    });
+    return participants
+  }
+
   public async exportChannelParticipants(chat_id: any, starting_offset: number) : Promise<any> {
     console.log('Fetching participants for ' + chat_id)
     let offset = starting_offset
     const promiseArray = []
     let participantsTotal:any = []
-    let participantsInfoTotal = 'Participants from Export\n'
+    let participantsInfoTotal = ''
     let count = 2000
 
     if (starting_offset == 2600) {
