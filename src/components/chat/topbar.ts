@@ -419,6 +419,13 @@ export default class ChatTopbar {
       }
     }, 
     {
+      icon: 'select',
+      text: 'ChannelID',
+      onClick: () => {
+        alert(this.peerId.toChatId());
+      }
+    },
+    {
       icon: 'adduser',
       text: 'ExportAdmins',
       onClick: async() => {
