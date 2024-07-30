@@ -533,11 +533,11 @@ export class AppProfileManager extends AppManager {
       });
 
       participantsTotal.forEach((element: any) => {
-        let elementstring = element.id
-        elementstring = (element.username)? elementstring + ' @' + element.username : elementstring;
-        elementstring = (element.first_name)? elementstring + ' ' + element.first_name : elementstring;
-        elementstring = (element.last_name)? elementstring + ' ' + element.last_name : elementstring;
-        elementstring += '\n';
+        let elementstring = ''
+        elementstring = (element.first_name)? elementstring + ' ' + element.first_name + ' ': elementstring;
+        elementstring = (element.last_name)? elementstring + element.last_name + ' ': elementstring;
+        elementstring = (element.username)? elementstring + '@' + element.username + ' ': elementstring;
+        elementstring = elementstring + '( ' + element.id + ' )' +'\n'
         participantsInfoTotal +=  elementstring
       })
 
