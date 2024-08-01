@@ -417,7 +417,7 @@ export default class ChatTopbar {
         const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
         return this.chat.type === ChatType.Chat && !!(chatFull as ChatFull.channelFull)?.linked_chat_id;
       }
-    }, 
+    },
     {
       icon: 'adduser',
       text: 'ExportAdmins',
@@ -425,7 +425,49 @@ export default class ChatTopbar {
         const chat_id = this.peerId.toChatId();
         console.log('Export admins clicked')
         const admins = await this.managers.appProfileManager.exportChannelAdmins(chat_id)
-        alert(admins)
+        // alert(admins)
+        const alertDiv = document.createElement('div');
+        alertDiv.style.position = 'fixed';
+        alertDiv.style.top = '50%';
+        alertDiv.style.left = '50%';
+        alertDiv.style.transform = 'translate(-50%, -50%)';
+        alertDiv.style.backgroundColor = '#404040';
+        alertDiv.style.padding = '10px';
+        alertDiv.style.borderRadius = '5px';
+        alertDiv.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        alertDiv.style.zIndex = '1000';
+
+        const textarea = document.createElement('textarea');
+        textarea.value = admins;
+        textarea.style.width = '100%';
+        textarea.style.padding = '10px';
+        textarea.style.height = '100px';
+        textarea.style.borderRadius = '5px';
+
+        textarea.readOnly = true;
+        alertDiv.appendChild(textarea);
+
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy';
+        copyButton.style.marginLeft = '5px';
+        copyButton.style.marginTop = '5px';
+        copyButton.onclick = () => {
+          textarea.select();
+          document.execCommand('copy');
+          alert('Participants copied to clipboard');
+        };
+        alertDiv.appendChild(copyButton);
+
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close';
+        closeButton.style.marginTop = '5px';
+        closeButton.style.marginLeft = '10px';
+        closeButton.onclick = () => {
+          document.body.removeChild(alertDiv);
+        };
+        alertDiv.appendChild(closeButton);
+
+        document.body.appendChild(alertDiv);
       },
       verify: async() => {
         // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
@@ -438,7 +480,49 @@ export default class ChatTopbar {
         const chat_id = this.peerId.toChatId();
         console.log('Export participants clicked')
         const participants = await this.managers.appProfileManager.exportChannelParticipants(chat_id, 0)
-        alert(participants)
+        // alert(participants)
+        const alertDiv = document.createElement('div');
+        alertDiv.style.position = 'fixed';
+        alertDiv.style.top = '50%';
+        alertDiv.style.left = '50%';
+        alertDiv.style.transform = 'translate(-50%, -50%)';
+        alertDiv.style.backgroundColor = '#404040';
+        alertDiv.style.padding = '10px';
+        alertDiv.style.borderRadius = '5px';
+        alertDiv.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        alertDiv.style.zIndex = '1000';
+
+        const textarea = document.createElement('textarea');
+        textarea.value = participants;
+        textarea.style.width = '100%';
+        textarea.style.padding = '10px';
+        textarea.style.height = '100px';
+        textarea.style.borderRadius = '5px';
+
+        textarea.readOnly = true;
+        alertDiv.appendChild(textarea);
+
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy';
+        copyButton.style.marginLeft = '5px';
+        copyButton.style.marginTop = '5px';
+        copyButton.onclick = () => {
+          textarea.select();
+          document.execCommand('copy');
+          alert('Participants copied to clipboard');
+        };
+        alertDiv.appendChild(copyButton);
+
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close';
+        closeButton.style.marginTop = '5px';
+        closeButton.style.marginLeft = '10px';
+        closeButton.onclick = () => {
+          document.body.removeChild(alertDiv);
+        };
+        alertDiv.appendChild(closeButton);
+
+        document.body.appendChild(alertDiv);
       },
       verify: async() => {
         // const chatFull = await this.managers.appProfileManager.getCachedFullChat(this.peerId.toChatId());
