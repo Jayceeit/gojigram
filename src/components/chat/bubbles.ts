@@ -5078,10 +5078,16 @@ export default class ChatBubbles {
     copyButton.style.color = 'Black';
     copyButtonDiv.classList.add('copy-button');
 
-    copyButton.onclick = () => {
-      // titleVia.select();
-      document.execCommand('copy');
-      alert('Displayname, Username and ID copied !!');
+    copyButton.onclick = (e) => {
+      const target = e.currentTarget as HTMLElement;
+      const parentElement = target.parentElement.parentElement;
+      const textToCopy = parentElement.querySelector('.peer-title').textContent;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => { alert('Displayname, Username and ID copied !!'); })
+          .catch(() => { alert('err'); });
+      }
     };
 
     copyButtonDiv.append(copyButton);
