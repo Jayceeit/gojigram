@@ -5086,7 +5086,7 @@ export default class ChatBubbles {
       if (navigator.clipboard) {
         navigator.clipboard.writeText(textToCopy)
           .then(() => { alert('Displayname, Username and ID copied !!'); })
-          .catch(() => { alert('err'); });
+          .catch(() => { alert('Error copying username'); });
       }
     };
 
