@@ -5066,11 +5066,39 @@ export default class ChatBubbles {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', 'spoilers-container');
 
+    const copyButtonDiv = document.createElement('div');
+    copyButtonDiv.classList.add('copyButton-div');
+
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copy';
+    copyButton.style.margin= '10px';
+    copyButton.style.padding = '5px 10px';
+    copyButton.style.borderRadius = '5px';
+    copyButton.style.backgroundColor = 'White';
+    copyButton.style.color = 'Black';
+    copyButtonDiv.classList.add('copy-button');
+
+    copyButton.onclick = (e) => {
+      const target = e.currentTarget as HTMLElement;
+      const parentElement = target.parentElement.parentElement;
+      const textToCopy = parentElement.querySelector('.peer-title').textContent;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => { alert('Displayname, Username and ID copied !!'); })
+          .catch(() => { alert('Error copying username'); });
+      }
+    };
+
+    copyButtonDiv.append(copyButton);
+
     const contentWrapper = document.createElement('div');
     contentWrapper.classList.add('bubble-content-wrapper');
 
     const bubbleContainer = document.createElement('div');
     bubbleContainer.classList.add('bubble-content');
+
+    bubbleContainer.append(copyButtonDiv);
 
     bubble.classList.add('bubble');
     contentWrapper.append(bubbleContainer);
